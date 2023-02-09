@@ -10,20 +10,20 @@ public class Servidor {
             // 1 - Crear socket de tipo servidor y le indicamos el puerto
             ServerSocket servidor = new ServerSocket(49200);
             InputStream is;
-            OutputStream os;
-            OutputStreamWriter osw ;
             BufferedReader br;
             InputStreamReader ir;
             String mensajeRecibido;
             Socket peticion;
 
             while (true) {
+                // se recoge el mensaje del cliente
                 peticion = servidor.accept();
-                // 3 - Abrir flujos de lectura y escritura de datos
-               is=peticion.getInputStream();
 
-                 ir = new InputStreamReader(is);
-                 br= new BufferedReader(ir);
+                // Se convierte el mensaje a String para leerlo
+                is = peticion.getInputStream();
+
+                ir = new InputStreamReader(is);
+                br = new BufferedReader(ir);
 
                 mensajeRecibido = br.readLine();
                 new GestorProcesos(mensajeRecibido, peticion).start();
