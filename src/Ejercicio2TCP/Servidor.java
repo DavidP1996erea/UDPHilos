@@ -1,6 +1,6 @@
 package Ejercicio2TCP;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -9,14 +9,26 @@ public class Servidor {
         try {
             // 1 - Crear socket de tipo servidor y le indicamos el puerto
             ServerSocket servidor = new ServerSocket(49200);
+            InputStream is;
+            OutputStream os;
+            OutputStreamWriter osw ;
+            BufferedReader br;
+            InputStreamReader ir;
+            String mensajeRecibido;
             Socket peticion;
+
             while (true) {
-                // 2 - Queda a la espera de peticiones y las acepta cuando las recibe
-                System.out.println("Servidor se encuentra a la escucha de peticiones...");
                 peticion = servidor.accept();
-                System.out.println("(Servidor) conexión establecida...");
-                new GestorProcesos(peticion).start();
+                // 3 - Abrir flujos de lectura y escritura de datos
+               is=peticion.getInputStream();
+
+                 ir = new InputStreamReader(is);
+                 br= new BufferedReader(ir);
+
+                mensajeRecibido = br.readLine();
+                new GestorProcesos(mensajeRecibido, peticion).start();
             }
+
 
         } catch (IOException e) {
             System.err.println("Ha habido algún error en la creación del Socket Servidor");
